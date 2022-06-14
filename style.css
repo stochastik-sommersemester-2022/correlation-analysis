@@ -1,0 +1,19 @@
+h1.title, h4.author, h4.date {
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-family: "Lato", sans-serif;
+}
+
+h1, h2, h3, h4 {
+  color: #3b3b3d;
+}
+
+body{
+  text-align: justify;
+  font-family: "Lato", sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  color: #777777;
+  padding: 30px;
+}
