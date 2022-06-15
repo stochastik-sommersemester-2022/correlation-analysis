@@ -1,7 +1,7 @@
 ---
 title: "Zusammenhangsanalyse für die Merkmalen Bauchumfang und Körperfett"
 author: Vitaly Chouliak
-date: 07.06.2017
+date: 15.06.2017
 output: 
   html_document:
     css: style.css
@@ -16,34 +16,28 @@ source("Utils.R")
 
 
 # Einleitung
-Für die Demonstration und die Duchführung der Zusammenhangsanalyse sind die Merkmale, Körperfett und Bauchumfang, von der Tabelle für den Anteil an Körperfett in einem Körper [[1]](#johnson) verwendet. Dabei soll mittels Korrelation- und Regressionsanalyse gezeigt werden ob ein Zusammenhang zwischen den ausgewählten Merkmalen besteht. Die Daten der Tabelle enthalten Schätzungen des Körperfettanteils, ermittelt durch Unterwasserwägen und verschiedenen Körperumfangsmessungen von 252 Männern.
+Für die Demonstration und die Duchführung der Zusammenhangsanalyse sind die Merkmale, Körperfett und Bauchumfang, von der Tabelle für den Anteil an Körperfett in einem Körper [[1]](#johnson) verwendet. Dabei soll mittels Korrelation- und Regressionsanalyse gezeigt werden, ob ein Zusammenhang zwischen den ausgewählten Merkmalen besteht. Die Daten der Tabelle enthalten Schätzungen des Körperfettanteils, ermittelt durch Unterwasserwägen und verschiedenen Körperumfangsmessungen von 252 Männern.
 Eine kurze Beschreibung zu den Daten selbst, als auch die englische Version der Tabelle, findet man unter diesem [Link](http://staff.pubhealth.ku.dk/~tag/Teaching/share/data/Bodyfat.html#org16c7c47).
 <br/><br/>
-Bei der Bearbeitung der Aufgabe wurde grösstenteils am Vorlesungsscript des Moduls Stochastik für Informatiker eingegangen als auch für den "Spickzetell" volgende Quellen verwendet:
 
-* "Mathematik für Naturwissenschaftler für Dummies" Print ISBN:987-3-527-71259-5
-* "Mathematik für Informatiker, Einführung an praktischen Beispielen aus der Welt der Computer" ISBN: 3-446-22802-0
-* "Mathematische Formelsammlung für Ingenieure und Naturwissenschaftler" ISBN: 978-3-83483-1913-0
-* Youtube kanäle [Manfred Brill](https://www.youtube.com/channel/UCxlcztd3V5twkeZTKSDH3Hw/videos), [Statistik am PC](https://www.youtube.com/c/StatistikamPC_BjoernWalther) und [Mathe by Daniel Jung](https://www.youtube.com/c/MathebyDanielJung)
-* sowie allgemeine Recherchen im Netz bezüglich der Thematik
 ## Köreperfett Tabelle
-Anbei für den groben Überblick ist die Tabelle von denen die zu bearbeitende Merkmale genommen wurde
+Anbei für den groben Überblick ist die Tabelle von denen die zu bearbeitende Merkmale genommen wurden.<br/><br/>
 ```{r echo=FALSE}
 print_paged_table(basedata_german)
 ```
 
 ## Ausgangssituation
 Es gibt die ausgewählten Daten für n = `r n` auf Körperfettanteil untersuchten Männer: $X$ - Körperfett in Prozent und $Y$ - Bauchumfang in cm. Die ausgewählten Daten sind nicht gruppiert und sind auf ihren möglichen Zusamenhang miteinander zu analysieren. <br/>
-Die Messdaten sind in Untenstehender Tabelle vorgestellt.
+Die Messdaten sind in Untenstehender Tabelle vorgestellt.<br/><br/>
 ```{r echo=FALSE}
 print_paged_table(bodyfat_and_abdomen)
 ```
-## Plan für die Ausarbeitung
+## Milensteine
 Um die Aufgabe zu lösen, ist es sinvoll den Lösungsweg in ca. Fünf Schritte zu unterteilen bzw. gliedern:<br/>
 
-  1. Eine Annahme über das Vorhandensein und die Richtung der Korrelationsabhängigkeit des Ergebnisses vom Faktor treffen und ein Streudiagramm  erstellen.
+  1. Eine Annahme über das Vorhandensein und die Richtung der Korrelationsabhängigkeit des Ergebnisses vom Faktor $X$ treffen und ein Streudiagramm  erstellen.
   2. Analyse des Streudiagramms , Schlussfolgerung über die Form der Abhängigkeit.
-  3. Gleichung der linearen Regression finden $Y$ auf $X$ , und zeichnen.
+  3. Gleichung der linearen Regression $Y$ auf $X$ finden und zeichnen.
   4. Lineare Korrelationskoefizient berechnen und eine Schlussfolgerung ziehen.
   5. Determinationskoeffizient berechnen und die Schlußfolgerung ziehen.
 
@@ -55,34 +49,34 @@ Je mehr ein Student schwänzt, desto wahrscheinlicher ist es natürlich, dass er
 
 Die Abhängigkeit kann positiv sein d.h. "je mehr, desto mehr", oder auch "je weniger, desto weniger" und inverse/negativ also "je mehr, desto weniger", oder "je weniger desto mehr" . Im folgenden soll es überlegt und geprüft werden um welchen Korelatisnrichtung es sich handelt
 
-## Die Richtung
+## Abhängigkeitsrichtung
 Es ist zu vermuten, dass je größer der Anteil an Körperfett ist, desto grösser ist der Bauchumfang. Somit ausgehend von aktueller Vermutung handelt es sich in diesem Fall um eine positive Korrelationsabhängigkeit wobei eine Variable zunimmt, während die andere zunimmt.
-Der einfachste Weg, die vorgeschlagene Annahme zu überprüfen, ist grafisch, und die Streudiagramm ist dabei hilfsreich.
+Der einfachste Weg, die vorgeschlagene Annahme zu überprüfen, ist grafisch und das Streudiagramm ist dabei sehr hilfsreich.
 
 ## Streudiagramm und die Auswertung 
 
 ### Streudiagramm
 Streudiagram ist die Menge von Punkten $(x_{i} : y_{i})$ im kartesischen Koordinatesystem, deren Abszissen $x_{i}$ den Werten des Attributsfaktors $X$ entsprechen und deren Ordinaten $y_{i}$ den entsprechenden Werten des Attributergenbisses $Y$ entsprechen.
 
-### Auswertung des Diagramms
 ```{r echo=FALSE}
-print_scatterplot(bodyfat_and_abdomen, bodyfat_and_abdomen$Körperfett, bodyfat_and_abdomen$Bauchumfang)
+print_scatterplot(bodyfat_and_abdomen, bodyfat_and_abdomen$Körperfett, bodyfat_and_abdomen$Bauchumfang,FALSE,"Bauchumfang bezogen auf Köreperfettanteil für n=252")
 ```
+### Auswertung
 Aus oben dargestellten Streudiagramm ist es deutlich zu sehen, dass mit steigender Zahl des Anteils an Körperfett, steigen hauptsächlich auch die Werte für den Bauchumfang, was den vorliegen einer positive Korrelation zwischen Anteil an Körperfett und Bauchumfang bestättigt. <br/>
-Gleichzeitig ist es zu entnehmen dass die beiden Variablen [bivariat](https://de.statista.com/statistik/lexikon/definition/36/bivariate_daten/) [normalverteilt](https://www.statsoft.de/glossary/B/BivariateNormalDistribution.htm) d.h. endliche Varianz ist automatisch gegeben. In diesem Fall ist der Korrelationskoeffizient der Stichprobe auch gleichzeitig der [Maximum-Likelihood Schätzer](https://www.statistik-nachhilfe.de/ratgeber/statistik/induktive-statistik/schaetzen-von-parametern/maximum-likelihood-methode) des Korrelationskoeffizienten der Grundgesamtheit. Er ist damit [asymptotisch erwartungstreu](https://de.wikipedia.org/wiki/Asymptotische_Erwartungstreue) und effizient. Das bedeutet vereinfacht ausgedrückt, dass es dadurch unmöglich ist, eine genauere Schätzung der Korrelation zu machen als durch den Korrelationskoeffizienten... <br/><br/>
+Gleichzeitig ist es zu entnehmen dass die beiden Variablen [bivariat](https://de.statista.com/statistik/lexikon/definition/36/bivariate_daten/) [normalverteilt](https://www.statsoft.de/glossary/B/BivariateNormalDistribution.htm) sind, d.h. endliche Varianz ist automatisch gegeben. In diesem Fall ist der Korrelationskoeffizient der Stichprobe auch gleichzeitig der [Maximum-Likelihood Schätzer](https://www.statistik-nachhilfe.de/ratgeber/statistik/induktive-statistik/schaetzen-von-parametern/maximum-likelihood-methode) des Korrelationskoeffizienten der Grundgesamtheit. Er ist damit [asymptotisch erwartungstreu](https://de.wikipedia.org/wiki/Asymptotische_Erwartungstreue) und effizient. Das bedeutet vereinfacht ausgedrückt, dass es dadurch unmöglich ist, eine genauere Schätzung der Korrelation zu machen als durch den Korrelationskoeffizienten... <br/><br/>
 
-Um die Analyse weiter etwas übersichtlicher zu gestallten wird die Stichprobenalyse für die ersten `r n_sample` Merkmalsträgern für den selben Merkmalen (also Körperfett und Bauchumfang )
-Dazu haben wir aktuell folgende Werte, mit denen eine Zusammenhang zwischen Variablen bestättigt werden soll.
+Um die Analyse weiter etwas übersichtlicher zu gestallten wird die Stichprobenalyse für die ersten `r n_sample` Merkmalsträgern für den selben Merkmalen (also Körperfett und Bauchumfang) weitergeführt
+Dazu hat man aktuell folgende Werte, mit denen ein Zusammenhang zwischen Variablen bestättigt werden soll.<br/><br/>
 ```{r echo=FALSE}
 print_paged_table(bodyfat_and_abdomen_sample)
 ```
 Anhand der Dargestellten Werten ergibt sich folgendes Streudiagramm, wobei es wieder wie im vorherigen Diagramm zu entnehmen ist, dass bei den zu Analisierenden Merkmalen es sich um eine positive Korellation zwischen Variablen handelt.
 ```{r echo=FALSE}
-print_scatterplot(bodyfat_and_abdomen_sample, bodyfat_and_abdomen_sample$Körperfett, bodyfat_and_abdomen_sample$Bauchumfang)
+print_scatterplot(bodyfat_and_abdomen_sample, bodyfat_and_abdomen_sample$Körperfett, bodyfat_and_abdomen_sample$Bauchumfang, FALSE, "Bauchumfang bezogen auf Köreperfettanteil")
 ```
 ## Lineare Regressionsgleichung $Y$ auf $X$
-Darunter versteht man die optimalste Gerade $y=ax+b$, die möglichst nah an den empirischen Punkten vorbeiführt. Um die lineare Regressionsgleichung zu ermitteln wird an die Methode des kleinsten Quadraten (Ordinary Least Squers) eingegangen. <br/><br>
-Aus den vorhandenen Meerkmalsausprägungen (Werte) ergibt sich folgende Wertetabelle für Körperfettwerte $x_{i}$ und Bauchumfang $y_{i}$. Die Summenergebnisse sind in der lezten Reihe der Tabelle vorgestellt und mit grauer Farbe hervorgehoben.<br/><br/>Ergänzend zu der Tabelle muss man schreiben, dass die $y^2$ Werte später für die Ermittlung des Korrelationskoefizient verwendet werden.
+Darunter versteht man die optimalste Gerade $y=ax+b$, die möglichst nah an den empirischen Punkten vorbeiführt. Um die lineare Regressionsgleichung zu ermitteln, wird an die [Methode des kleinsten Quadraten](https://mathepedia.de/Methode_der_kleinsten_Quadrate.html) (Ordinary Least Squers) eingegangen. <br/><br>
+Aus den vorhandenen Meerkmalsausprägungen (Werte) ergibt sich folgende Wertetabelle für Körperfettwerte $x_{i}$ und Bauchumfang $y_{i}$. Die Summenergebnisse sind in der lezten Reihe der Tabelle vorgestellt und mit grauer Farbe hervorgehoben.<br/><br/>Ergänzend zu der Tabelle muss man schreiben, dass die $y^2$ Werte nicht jetzt, sondern später, für die Ermittlung des Korrelationskoefizient verwendet werden.<br/><br/>
 ```{r echo=FALSE}
 ols_table
 ```
@@ -126,28 +120,29 @@ Damit die Ergebnisse $a\approx`r a`$ und $b\approx`r b`$ zu prüffen werden die 
 $$`r ols_sum[['Xi2']]` \cdot `r a` + `r ols_sum[['Xi']]` \cdot `r b` \approx `r format(round((ols_sum[['Xi2']]*a+ols_sum[['Xi']]*b),digits = 2), scientistic = FALSE)`$$
  
 $$`r ols_sum[['Xi']] `\cdot `r a` + `r n_sample` \cdot `r b` \approx `r format(round((ols_sum[['Xi']]*a+n_sample*b),digits = 2), scientistic = FALSE)`$$
-Als Ergebnis sind die entsprechenden rechten Teile erhalten, was bedeutet, dass das System korrekt gelöst ist. Damit ergibt sich die gesuchte Regressionsgleichung: $$y=`r a`x+`r b`$$.
-Dieses Gleichung zeigt, dass mit der Steigung des Körperfettes ($X$) um eine Einheit, steigt auch der Bauchumfang um durchschnittlich `r a` cm (Koeffizient $a$). Es ist auch zu beachten, dass die ermittelte Funktion auch durchnittliche (durchnittlich erwartete) Werte für $Y$ für verschidenen $x_{i}$ zurückgibt.Warum ist diese Regression $Y$ auf $X$ gennant ist, kann man die Info allgemein im Netz finden z.B. [hier](https://stats.stackexchange.com/questions/22718/what-is-the-difference-between-linear-regression-on-y-with-x-and-x-with-y) oder [hier](https://www.methodenberatung.uzh.ch/de/datenanalyse_spss/zusammenhaenge/ereg.html) . Kurz gesagt, die durchschnittlichen Bauchumfangswerte ($y_{i}$) führen zu Uhrsache Körperfettanteil zurück. <br/> Da die Regressionsgleichung ermittelt wurde, kann man einen Regressionsgerad auf den Streudiagramm zeichnen.
+Als Ergebnis sind die entsprechenden rechten Teile erhalten, was bedeutet, dass das System korrekt gelöst ist. Damit ergibt sich die gesuchte Regressionsgleichung: $$y=`r a`x+`r b`$$
+Dieses Gleichung zeigt, dass mit der Steigung des Körperfettanteils ($X$) um eine Einheit, steigt auch der Bauchumfang um durchschnittlich `r a` cm (Koeffizient $a$). Es ist auch zu beachten, dass die ermittelte Funktion auch durchnittliche (durchnittlich erwartete) Werte für $Y$ für verschidenen $x_{i}$ zurückgibt.Warum ist diese Regression $Y$ auf $X$ gennant ist, kann man die Info allgemein im Netz finden z.B. [hier](https://stats.stackexchange.com/questions/22718/what-is-the-difference-between-linear-regression-on-y-with-x-and-x-with-y) oder [hier](https://www.methodenberatung.uzh.ch/de/datenanalyse_spss/zusammenhaenge/ereg.html). Kurz erklärt, die durchschnittlichen Bauchumfangswerte ($y_{i}$) führen zu Uhrsache Körperfettanteil zurück. <br/> Da die Regressionsgleichung ermittelt wurde, kann man eine Regressionsgerade auf den Streudiagramm zeichnen.
 ```{r echo=FALSE}
-print_scatterplot(bodyfat_and_abdomen_sample, bodyfat_and_abdomen_sample$Körperfett, bodyfat_and_abdomen_sample$Bauchumfang, TRUE)
+print_scatterplot(bodyfat_and_abdomen_sample, bodyfat_and_abdomen_sample$Körperfett, bodyfat_and_abdomen_sample$Bauchumfang, TRUE,"Bauchumfang bezogen auf Köreperfettanteil")
 ```
 Man sagt, dass die Regressionsgleichung approximiert(annähert) die empirische Daten und damit kann man unbekannte Zwischenwerte interpolieren (schätzen), sodass
-z.B. mit dem Korperfettanteil von 15% ist der durchschnitlich erwartete Bauchumfang in cm $`r a` \cdot 15 + `b` \approx `r a*15+b`$ betragen soll.<br/><br/>
+z.B. mit dem Korperfettanteil von 15% ist der durchschnitlich erwartete Bauchumfang in cm $`r a` \cdot 15 + `r b` \approx `r a*15+b`$ betragen soll.<br/><br/>
 Die andere Frage, wie Stark ist die Abhängigkeit. Es ist offensichtlich, dass je näher die empirischen Punkte an der Regressionslinie liegen, desto enger die lineare Korrelationsabhängigkeit ist und desto zuverlässiger spiegelt die Regressionsgleichung die Situation wieder, und desto besser ist das erhaltene Modell. Und umgekehrt, wenn viele Punkte weit von der Geraden gestreut sind, dann  hängt das Merkmal $X$ überhaupt nicht linear (wenn überhaupt) ab und die lineare Funktion gibt das reale Bild nicht gut wieder.<br/><br/> Dabei ist die ermittlung der Korrelationskoefizien kann weiter helfen.
 
 ## Lineare Korrelationskoeffizient
+### Berechnung
 Dieser Koeffizient schätzt lediglich die Enge der linearen Korrelationsabhängigkeit und gibt darüber hinaus ihre Richtung (direkt oder inverse) an. Die vollständige Bezeichnung des Koeffizients ist Pearson's Sample Linear Pair Correlation Coefficient
 
 * Sample - weil man eine Stichprobe betrachtet
 * Linear - weil es die Nähe der linearen Korrelationsabhängigkeit schätzt
 * Pair - weil man zwei Merkmale hat
-* Pearson - zu Ehren des englischen Statistikers [Karl Pearson](https://de.wikibrief.org/wiki/Karl_Pearson) er ist der Autor des Konzepts der "Korrelation".
+* Pearson - zu Ehren des englischen Statistikers [Karl Pearson](https://de.wikibrief.org/wiki/Karl_Pearson), er ist der Autor des Konzepts der "Korrelation".
 
 Man berechnen den linearen Korrelationskoeffizienten nach der Formel:
 $$
 r_{xy}=\frac{\overline{xy} - \overline{x} \cdot\overline{y}}{\sigma_{x}\sigma_{y}}
 $$
-wobei $\overline{xy}$ der Durchnittswert des Merkmalsprodukt is, $\overline{x},\overline{y}$ die Mittelwerte und $\sigma_{x}\sigma{y}$ sind die [Standardabweichungen](https://de.statista.com/statistik/lexikon/definition/126/standardabweichung/) der Merkmale.
+wobei $\overline{xy}$ der Durchnittswert des Merkmalsprodukts ist, $\overline{x},\overline{y}$ die Mittelwerte und $\sigma_{x}\sigma_{y}$ sind die [Standardabweichungen](https://de.statista.com/statistik/lexikon/definition/126/standardabweichung/) der Merkmale.
 Alle benötigte Werte sind in vorheriger Tabelle schon ausgerechnet und werden auch demensprechend eingesetzt.
 $$
 \overline{xy} = \frac{\sum x_{i} y_{i}}{n} = \frac{`r ols_sum[['XiYi']]`}{`r n_sample`} = `r ols_sum[['XiYi']]/n_sample`
@@ -158,7 +153,7 @@ $$
 $$
 \overline{y} = \frac{\sum y_{i}}{n} = \frac{`r ols_sum[['Yi']]`}{`r n_sample`} = `r ols_sum[['Yi']]/n_sample`
 $$
-Man findet Standardabweichungen als Wurzeln der entsprechenden Varianzen, berechnet nach der Formel :
+Man findet Standardabweichungen als Wurzeln der entsprechenden Varianzen, berechnet nach der Formel:
 $$
 \sigma_{x}=\sqrt{\frac{\sum x_{i}^2}{n}-(\overline{x})^2}= \sqrt{\frac{`r ols_sum[['Xi2']]`}{`r n_sample`} - (`r Xi_average`)^2} = `r Xi_deviation` 
 $$
@@ -168,14 +163,21 @@ $$
 Somit beträgt der Korrelationskoeffizient:
 $$r_{xy}=\frac{\overline{xy} - \overline{x} \cdot\overline{y}}{\sigma_{x}\sigma_{y}} = \frac{`r XiYi_average` - `r Xi_average` \cdot `r Yi_average`}{`r Xi_deviation` \cdot `r Yi_deviation`} = `r correlation`
 $$
-Und Interpretation : Der Korrelationskoeffizient kann innerhalb $-1\le0\le1$ variieren und je näher er im absoluten Wert bei Eins liegt, desto näher ist die lineare Korrelationsabhängigkeit - je näher die Punkte an der geraden Linie liegen, desto besser und zuverlässiger ist das lineare Modell. Wenn $r=-1$ entweder $r=1$, dann sprechen wir von einer streng linearen Abhängigkeit, bei der alle empirischen Punkte auf der konstruierten Linie liegen. Im Gegenteil, je näher  an Null, je weiter die Punkte gestreut sind, desto weniger lineare Abhängigkeit wird ausgedrückt. Im letzteren Fall kann die Abhängigkeit jedoch immer noch bestehen! zum Beispiel nichtlinear oder etwas mysteriöser.<br/>
+
+### Interpretation
+Der Korrelationskoeffizient kann innerhalb $-1\le0\le1$ variieren und je näher er im absoluten Wert bei Eins liegt, desto näher ist die lineare Korrelationsabhängigkeit - je näher die Punkte an der geraden Linie liegen, desto besser und zuverlässiger ist das lineare Modell. Wenn $r=-1$ entweder $r=1$, dann sprechen wir von einer streng linearen Abhängigkeit, bei der alle empirischen Punkte auf der konstruierten Linie liegen. Im Gegenteil, je näher $r$ an Null liegt, je weiter die Punkte gestreut sind, desto weniger lineare Abhängigkeit wird ausgedrückt. Im letzteren Fall kann die Abhängigkeit jedoch immer noch bestehen! zum Beispiel nichtlinear oder etwas mysteriöser...<br/>
 In aktuellen fall $r=`r correlation`$ es besteht also eine <b>starke positive Korrelationsabhängigkeit</b> der $Y$ - Bauchumfang von $X$ Körperfettanteil
 
 ## Determinationskoeffizient
-Dies ist teilweise ein Analog des empirischen [Bestimmheitsmaßes](https://de.wikipedia.org/wiki/Bestimmtheitsma%C3%9F). Es gibt ein Quadrat des Korrelationskoeffizienten: $R=r^2$ Determinationskoeffizient zeigt den Anteil der Variation des Ergebnisses $Y$, der auf den Einfluss von Faktors $X$ zurückzuführen ist.<br/>
-Bei der zuvor durchgeführte Analyse wurde festgestellt dass Korrelationskoefizient $r\approx`r correlation`$ beträgt, somit ist der Determinationskoeffizient $R=r^2\approx(`r correlation`)^2\approx`r correlation^2`$ d.h. dass Bauchumfang des Mannes hängt zu `r round((correlation^2)*100, digit=2)`% von Körperfettanteil in seinem Körper. der Rest `r round(100 -((correlation^2)*100), digit=2)`% ist auf andere Gründe zurückzuführen.
-
-Somit ist die Zusammenhangsanalyse mit einen kleinen hinweis beendet: Dies ist jedoch keine "absolute Wahrheit", sondern nur eine Schätzung im Rahmen des gebauten Modells.
+Dies ist teilweise ein Analog des empirischen [Bestimmheitsmaßes](https://de.wikipedia.org/wiki/Bestimmtheitsma%C3%9F). Es gibt ein Quadrat des Korrelationskoeffizienten: $R=r^2$ dieses Determinationskoeffizient zeigt den Anteil der Variation des Ergebnisses $Y$, der auf den Einfluss von Faktors $X$ zurückzuführen ist.<br/>
+Bei der zuvor durchgeführte Analyse wurde festgestellt, dass der Korrelationskoefizient $r\approx`r correlation`$ beträgt, somit ist der Determinationskoeffizient $R=r^2\approx(`r correlation`)^2\approx`r correlation^2`$ d.h. dass Bauchumfang eines Mannes hängt zu `r round((correlation^2)*100, digit=2)`% vom Körperfettanteil in seinem Körper. Der Rest `r round(100 -((correlation^2)*100), digit=2)`% ist auf andere Gründe zurückzuführen.
 
 # Quellen
-[[1] Roger W. Johnson (1996), ”Fitting Percentage of Body Fat to Simple Body Measurements”. Journal of Statistics Education, (4)1, 1996.](http://jse.amstat.org/v4n1/datasets.johnson.html){#johnson}
+Bei der Bearbeitung der Aufgabe wurde grösstenteils am Vorlesungsscript des Moduls Stochastik für Informatiker eingegangen, als auch folgende Quellen verwendet:
+
+* "Mathematik für Naturwissenschaftler für Dummies" ISBN: 987-3-527-71259-5
+* "Mathematik für Informatiker, Einführung an praktischen Beispielen aus der Welt der Computer" ISBN: 3-446-22802-0
+* "Mathematische Formelsammlung für Ingenieure und Naturwissenschaftler" ISBN: 978-3-83483-1913-0
+* Youtube kanäle [Manfred Brill](https://www.youtube.com/channel/UCxlcztd3V5twkeZTKSDH3Hw/videos), [Statistik am PC](https://www.youtube.com/c/StatistikamPC_BjoernWalther) und [Mathe by Daniel Jung](https://www.youtube.com/c/MathebyDanielJung)
+* sowie allgemeine Recherchen im Netz bezüglich der Thematik
+* [[1] Roger W. Johnson (1996), ”Fitting Percentage of Body Fat to Simple Body Measurements”. Journal of Statistics Education, (4)1, 1996.](http://jse.amstat.org/v4n1/datasets.johnson.html){#johnson}

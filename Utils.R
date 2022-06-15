@@ -100,7 +100,7 @@ print_paged_table  <- function(dataset) {
 }
 
 print_scatterplot <-
-  function(dataset, x_data, y_data, draw_regression = FALSE) {
+  function(dataset, x_data, y_data, draw_regression = FALSE, plot_title="") {
     x_label <- "X"
     y_label <- "Y"
     x_parameter_name <- toString(deparse(substitute(x_data)))
@@ -123,7 +123,8 @@ print_scatterplot <-
     gp <- ggplot(dataset, aes(x = x_data, y = y_data)) +
       geom_point() +
       theme_bw() +
-      labs(x = paste(x_label, "(X)"), y = paste(y_label, "(Y)")) +
+      labs(x = paste(x_label, "(X)"), y = paste(y_label, "(Y)"), title=plot_title) +
+      theme(plot.title = element_text(hjust = 0.5))+
       scale_y_continuous(breaks = seq(0, 200, by = 5)) +
       scale_x_continuous(breaks = seq(0, 50, by = 5)) +
       if (draw_regression == TRUE) {
